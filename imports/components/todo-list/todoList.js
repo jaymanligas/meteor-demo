@@ -8,9 +8,7 @@ class TodosListCtrl {
   constructor($scope) {
 
     $scope.viewModel(this);
-
     this.helpers({
-      
       tasks() {
         const selector = {};
         // If hide completed is checked, filter tasks
@@ -24,8 +22,7 @@ class TodosListCtrl {
         // Show newest tasks at the top
         return Tasks.find(selector, { sort: {  createdAt: -1  } })
       }
-    })
-
+    });
   }
 
   addTask(newTask) {
@@ -33,12 +30,13 @@ class TodosListCtrl {
     Tasks.insert({
       text: newTask,
       createdAt: new Date,
-      checked : false
+      checked : false,
+      owner: Meteor.userId(),
+      username: Meteor.user().username
     });
     // Clear form
     this.newTask = '';
   }
-
   setChecked(task) {
     // Set the checked property to the opposite of its current value
     Tasks.update(task._id, {
@@ -48,20 +46,24 @@ class TodosListCtrl {
     });
   }
 
+  setTask(task) {
+    Tasks.update(task._id, {
+      $set: {
+        text: task.text
+      },
+    });
+  }
+
   removeTask(task) {
     Tasks.remove(task._id);
   }
-
   incompleteCount() {
     return Tasks.find({checked: false}).count();
   }
+  currentUser() {
+     return Meteor.user();
+  }
 }
-
-
-
-
-
-
 
 export default angular.module('todosList', [
   angularMeteor

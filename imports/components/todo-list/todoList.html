@@ -4,8 +4,11 @@
     <input type="checkbox" ng-model="$ctrl.hideCompleted"/>
     Hide Completed Tasks
   </label>
+
+  <login-buttons></login-buttons>
+
   <form class="new-task" ng-submit="$ctrl.addTask($ctrl.newTask)">
-     <input ng-model="$ctrl.newTask" type="text" name="text" placeholder="Type to add new tasks"/>
+     <input ng-model="$ctrl.newTask" tabindex="1" type="text" name="text" placeholder="Type to add new tasks"/>
  </form>
 </header>
 
@@ -13,7 +16,8 @@
   <li ng-class="{'checked': task.checked}" ng-repeat="task in $ctrl.tasks">
 
     <button class="delete" ng-click="$ctrl.removeTask(task)">&times;</button>
-    <input type="checkbox" ng-checked="task.checked" ng-click="$ctrl.setChecked(task)" class="toggle-checked"/>
-    {{task.text}}
+    <input type="checkbox"  ng-checked="task.checked" ng-click="$ctrl.setChecked(task)" class="toggle-checked"/>
+    <input class="task-input" tabindex="{{$index+2}}" ng-change="$ctrl.setTask(task)" type="text" name="name" ng-model="task.text" />
+
   </li>
 </ul>
